@@ -31,5 +31,13 @@ struct Constants {
             static let users = "/users"
             static let comments = "/comments?postId=$1"
         }
+
+    }
+
+    struct Animations {
+
+        static let error = "error"
+        static let empty = "empty"
+        static let searching = "searching"
     }
 }

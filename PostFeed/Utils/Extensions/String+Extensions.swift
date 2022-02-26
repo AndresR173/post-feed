@@ -9,6 +9,7 @@ import Foundation
 
 extension String {
 
+    // swiftlint:disable identifier_name
     var L: String {
 
         return NSLocalizedString(self, comment: "")

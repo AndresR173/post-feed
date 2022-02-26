@@ -9,8 +9,7 @@ import Foundation
 import Combine
 
 protocol PostsRepository {
-    func getAllPosts() -> AnyPublisher<[Post],Error>
+    func getAllPosts() -> AnyPublisher<[Post], Error>
     func removePost() -> AnyPublisher<Any, Error>
     func markPostAsFavorite(_ id: Int) -> AnyPublisher<Any, Error>
 }
-

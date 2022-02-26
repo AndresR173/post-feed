@@ -9,18 +9,25 @@ import Foundation
 import Swinject
 
 final class ServiceLocator {
-    
+
     static let shared = ServiceLocator()
-    
+
     let container = Container()
-    
+
     func initialize() {
-        
-        container.register(PostViewModelProtocol.self) { _ in PostViewModel()}
+
+        // Data Managers
+        container.register(PostsDataManager.self) { _ in PostsDataManager(LocalPostsRepository(),
+                                                                          NetworkPostRepository())
+        }
+
+        // ViewModels
+        container.register(PostViewModelProtocol.self) { _ in PostsViewModel(self.resolve())}
+
     }
-    
+
     func resolve<T>() -> T {
-        
+
         return container.resolve(T.self)!
     }
 }

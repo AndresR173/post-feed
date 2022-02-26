@@ -8,7 +8,7 @@
 import CoreData
 import Foundation
 
-class CoreDataHelper {
+final class CoreDataHelper {
     static let shared = CoreDataHelper()
     private var context: NSManagedObjectContext?
 
@@ -16,15 +16,21 @@ class CoreDataHelper {
         self.context = context
     }
 
-    ///Get all values from an entity
-    static func getAll<T: NSManagedObject>( predicate: NSPredicate? = nil, sortDescriptor: [NSSortDescriptor]? = nil, completion: @escaping(([T]?) -> Void)) {
+    /// Get all values from an entity
+    static func getAll<T: NSManagedObject>( predicate: NSPredicate? = nil,
+                                            sortDescriptor: [NSSortDescriptor]? = nil,
+                                            completion: @escaping(([T]?) -> Void)) {
         guard let context = CoreDataHelper.shared.context else {
             completion(nil)
             return
         }
         context.performAndWait {
             do {
-                let request: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
+                guard let request: NSFetchRequest<T> = T.fetchRequest() as? NSFetchRequest<T> else {
+                    completion(nil)
+                    return
+                }
+
                 request.predicate = predicate
                 request.sortDescriptors = sortDescriptor
                 let values = try context.fetch(request)
@@ -35,7 +41,7 @@ class CoreDataHelper {
         }
     }
 
-    ///Remove object
+    /// Remove object
     static func deleteObject(_ object: NSManagedObject, completion: @escaping ((Bool) -> Void)) {
         guard let context = CoreDataHelper.shared.context  else {
             completion(false)
@@ -63,7 +69,7 @@ class CoreDataHelper {
         }
     }
 
-    ///Get main context Attachment
+    /// Get main context Attachment
     static func getMainContextObject<T: NSManagedObject>(_ entity: T) -> T? {
         var managedObject: T?
         guard let context = CoreDataHelper.shared.context else { return nil }
@@ -73,13 +79,15 @@ class CoreDataHelper {
         return managedObject
     }
 
-    ///Get main context Attachment
+    /// Get main context Attachment
     static func getMainContextObjectBy<T: NSManagedObject>(predicate: NSPredicate) -> T? {
         var managedObject: T?
         guard let context = CoreDataHelper.shared.context else { return nil }
         context.performAndWait {
             do {
-                let request: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
+                guard let request: NSFetchRequest<T> = T.fetchRequest() as? NSFetchRequest<T> else {
+                    return
+                }
                 request.predicate = predicate
                 managedObject = try context.fetch(request).first
             } catch {
@@ -88,7 +96,7 @@ class CoreDataHelper {
         return managedObject
     }
 
-    ///Purge Entity
+    /// Purge Entity
     static func purge<T: NSManagedObject>(entity: T.Type, completion: @escaping((Bool) -> Void)) {
         guard let context = CoreDataHelper.shared.context else { return }
         context.performAndWait {
@@ -109,13 +117,16 @@ class CoreDataHelper {
         }
     }
 
-    ///Get main context Attachment
-    static func getMainContextObjects<T: NSManagedObject>(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) -> [T]? {
+    /// Get main context Attachment
+    static func getMainContextObjects<T: NSManagedObject>(predicate: NSPredicate? = nil,
+                                                          sortDescriptors: [NSSortDescriptor]? = nil) -> [T]? {
         var managedObject: [T]?
         guard let context = CoreDataHelper.shared.context else { return nil }
         context.performAndWait {
             do {
-                let request: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
+                guard let request: NSFetchRequest<T> = T.fetchRequest() as? NSFetchRequest<T> else {
+                    return
+                }
                 request.predicate = predicate
                 request.sortDescriptors = sortDescriptors
                 managedObject = try context.fetch(request)

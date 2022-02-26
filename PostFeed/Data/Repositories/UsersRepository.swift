@@ -9,5 +9,5 @@ import Foundation
 import Combine
 
 protocol UsersRepository {
-    func getUserBy(id: Int) -> AnyPublisher<User,Error>
+    func getUserBy(id: Int) -> AnyPublisher<User, Error>
 }
