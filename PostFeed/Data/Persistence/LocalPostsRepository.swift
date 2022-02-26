@@ -7,10 +7,24 @@
 
 import Foundation
 import Combine
+import CoreData
 
 struct LocalPostsRepository: PostsRepository {
+
+    private let client: CoreDataClient = ServiceLocator.shared.resolve()
+
     func getAllPosts() -> AnyPublisher<[Post], Error> {
-        return  Fail(error: Failure.badRequest).eraseToAnyPublisher()
+        client.getAll(
+            entity: PostEntity.self,
+            sortDescriptor: [NSSortDescriptor(keyPath: \PostEntity.isFavorite, ascending: true)])
+            .map { entities in
+                var posts = [Post]()
+                entities.forEach { entity in
+                    posts.append(Post.fromEntity(entity))
+                }
+                return posts
+            }
+            .eraseToAnyPublisher()
     }
 
     func removePost() -> AnyPublisher<Any, Error> {
@@ -19,6 +33,18 @@ struct LocalPostsRepository: PostsRepository {
 
     func markPostAsFavorite(_ id: Int) -> AnyPublisher<Any, Error> {
         return  Fail(error: Failure.badRequest).eraseToAnyPublisher()
+    }
+
+    func addPost(post: Post) -> AnyPublisher<Post, Error> {
+        client.add(entity: PostEntity.self) { entity in
+            entity.id = Int32(post.id)
+            entity.userId = Int32(post.userId)
+            entity.title = post.title
+            entity.body = post.body
+        }.map { entity in
+            return Post.fromEntity(entity)
+        }
+        .eraseToAnyPublisher()
     }
 
 }

@@ -16,8 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         ServiceLocator.shared.initialize()
 
-        let client: CoreDataClient = ServiceLocator.shared.resolve()!
-        client.context = persistentContainer.viewContext
+        ServiceLocator.shared.container.register(CoreDataClient.self) { _ in
+            CoreDataClient(self.persistentContainer.viewContext)
+        }
 
         return true
     }

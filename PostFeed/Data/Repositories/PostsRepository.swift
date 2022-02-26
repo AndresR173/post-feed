@@ -12,4 +12,5 @@ protocol PostsRepository {
     func getAllPosts() -> AnyPublisher<[Post], Error>
     func removePost() -> AnyPublisher<Any, Error>
     func markPostAsFavorite(_ id: Int) -> AnyPublisher<Any, Error>
+    func addPost(post: Post) -> AnyPublisher<Post, Error>
 }

@@ -14,3 +14,12 @@ struct Post: Codable {
     let body: String
     var isFavorite: Bool? = false
 }
+
+extension Post {
+    static func fromEntity(_ entity: PostEntity) -> Post {
+        return Post(id: Int(entity.id),
+                    userId: Int(entity.userId),
+                    title: entity.title ?? "",
+                    body: entity.body ?? "")
+    }
+}

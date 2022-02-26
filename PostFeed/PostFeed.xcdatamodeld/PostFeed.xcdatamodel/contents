@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19206" systemVersion="21D62" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CommentsEntity" representedClassName="CommentsEntity" syncable="YES" codeGenerationType="class">
-        <attribute name="body" optional="YES" attributeType="String"/>
+    <entity name="CommentEntity" representedClassName="CommentEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="body" attributeType="String"/>
         <attribute name="email" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="postId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="postComments" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PostsEntinty" inverseName="postComments" inverseEntity="PostsEntinty"/>
+        <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="postId" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="postComments" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PostEntity" inverseName="postComments" inverseEntity="PostEntity"/>
     </entity>
-    <entity name="PostsEntinty" representedClassName="PostsEntinty" syncable="YES" codeGenerationType="class">
-        <attribute name="body" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
-        <attribute name="userId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="postComments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CommentsEntity" inverseName="postComments" inverseEntity="CommentsEntity"/>
-        <relationship name="postUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UsersEntity" inverseName="postUser" inverseEntity="UsersEntity"/>
+    <entity name="PostEntity" representedClassName="PostEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="body" attributeType="String"/>
+        <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="title" attributeType="String"/>
+        <attribute name="userId" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="postComments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CommentEntity" inverseName="postComments" inverseEntity="CommentEntity"/>
+        <relationship name="postUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="postUser" inverseEntity="UserEntity"/>
     </entity>
-    <entity name="UsersEntity" representedClassName="UsersEntity" syncable="YES" codeGenerationType="class">
+    <entity name="UserEntity" representedClassName="UserEntity" syncable="YES" codeGenerationType="class">
         <attribute name="email" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
         <attribute name="phone" optional="YES" attributeType="String"/>
         <attribute name="website" optional="YES" attributeType="String"/>
-        <relationship name="postUser" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PostsEntinty" inverseName="postUser" inverseEntity="PostsEntinty"/>
+        <relationship name="postUser" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PostEntity" inverseName="postUser" inverseEntity="PostEntity"/>
     </entity>
     <elements>
-        <element name="UsersEntity" positionX="-63" positionY="-18" width="128" height="119"/>
-        <element name="PostsEntinty" positionX="-54" positionY="27" width="128" height="119"/>
-        <element name="CommentsEntity" positionX="-36" positionY="72" width="128" height="119"/>
+        <element name="CommentEntity" positionX="-36" positionY="72" width="128" height="119"/>
+        <element name="PostEntity" positionX="-54" positionY="27" width="128" height="134"/>
+        <element name="UserEntity" positionX="-63" positionY="-18" width="128" height="119"/>
     </elements>
 </model>

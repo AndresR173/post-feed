@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 struct NetworkPostRepository: PostsRepository {
+
     let apiClient = APIClient()
 
     func getAllPosts() -> AnyPublisher<[Post], Error> {
@@ -31,6 +32,10 @@ struct NetworkPostRepository: PostsRepository {
     }
 
     func markPostAsFavorite(_ id: Int) -> AnyPublisher<Any, Error> {
+        return  Fail(error: Failure.badRequest).eraseToAnyPublisher()
+    }
+
+    func addPost(post: Post) -> AnyPublisher<Post, Error> {
         return  Fail(error: Failure.badRequest).eraseToAnyPublisher()
     }
 }
