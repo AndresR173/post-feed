@@ -14,9 +14,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        CoreDataHelper.shared.setContext(persistentContainer.viewContext)
-
         ServiceLocator.shared.initialize()
+
+        let client: CoreDataClient = ServiceLocator.shared.resolve()!
+        client.context = persistentContainer.viewContext
 
         return true
     }

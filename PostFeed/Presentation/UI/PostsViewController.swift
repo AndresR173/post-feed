@@ -99,6 +99,8 @@ private extension PostsViewController {
                 return
             }
 
+            strongSelf.refreshControl.endRefreshing()
+
             if posts != nil {
                 strongSelf.tableView.fadeIn()
                 strongSelf.tableView.reloadData()
@@ -111,7 +113,9 @@ private extension PostsViewController {
     }
 
     @objc func refreshList() {
-        viewModel.getPosts(forced: true)
+        if refreshControl.isRefreshing {
+            viewModel.getPosts(forced: true)
+        }
     }
 }
 
@@ -119,11 +123,11 @@ private extension PostsViewController {
 
 extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.posts.value?.count ?? 0
+        return viewModel.posts.value?.count ?? 0
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        1
+       return 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

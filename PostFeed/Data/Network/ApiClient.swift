@@ -30,10 +30,3 @@ struct APIClient {
             .eraseToAnyPublisher()
     }
 }
-
-enum Failure: Error {
-
-    case serverError
-    case badContent
-    case badRequest
-}

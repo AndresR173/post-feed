@@ -13,3 +13,11 @@ enum HttpMethod: String {
     case patch = "PATCH"
     case put = "PUT"
 }
+
+enum Failure: Error {
+
+    case serverError
+    case badContent
+    case badRequest
+    case cacheError
+}
