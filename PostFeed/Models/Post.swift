@@ -12,4 +12,5 @@ struct Post: Codable {
     let userId: Int
     let title: String
     let body: String
+    var isFavorite: Bool? = false
 }

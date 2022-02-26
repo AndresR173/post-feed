@@ -45,6 +45,8 @@
 		E5DE4B2027CA95160060D9BA /* empty.json in Resources */ = {isa = PBXBuildFile; fileRef = E5DE4B1F27CA95160060D9BA /* empty.json */; };
 		E5DE4B2227CA951A0060D9BA /* error.json in Resources */ = {isa = PBXBuildFile; fileRef = E5DE4B2127CA951A0060D9BA /* error.json */; };
 		E5DE4B2427CA951E0060D9BA /* searching.json in Resources */ = {isa = PBXBuildFile; fileRef = E5DE4B2327CA951E0060D9BA /* searching.json */; };
+		E5DE4B2827CAA4090060D9BA /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE4B2627CAA4090060D9BA /* PostTableViewCell.swift */; };
+		E5DE4B2927CAA4090060D9BA /* PostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DE4B2727CAA4090060D9BA /* PostTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +107,8 @@
 		E5DE4B1F27CA95160060D9BA /* empty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = empty.json; sourceTree = "<group>"; };
 		E5DE4B2127CA951A0060D9BA /* error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = error.json; sourceTree = "<group>"; };
 		E5DE4B2327CA951E0060D9BA /* searching.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = searching.json; sourceTree = "<group>"; };
+		E5DE4B2627CAA4090060D9BA /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		E5DE4B2727CAA4090060D9BA /* PostTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +234,8 @@
 			children = (
 				E54574F127C841B000A5AE9D /* PostsViewController.xib */,
 				E54574EF27C841A000A5AE9D /* PostsViewController.swift */,
+				E5DE4B2627CAA4090060D9BA /* PostTableViewCell.swift */,
+				E5DE4B2727CAA4090060D9BA /* PostTableViewCell.xib */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -441,6 +447,7 @@
 				E54574A527C81E4700A5AE9D /* LaunchScreen.storyboard in Resources */,
 				E5DE4B2027CA95160060D9BA /* empty.json in Resources */,
 				E54574A227C81E4700A5AE9D /* Assets.xcassets in Resources */,
+				E5DE4B2927CAA4090060D9BA /* PostTableViewCell.xib in Resources */,
 				E5DE4B2427CA951E0060D9BA /* searching.json in Resources */,
 				E54574F227C841B000A5AE9D /* PostsViewController.xib in Resources */,
 			);
@@ -495,6 +502,7 @@
 				E54574F027C841A000A5AE9D /* PostsViewController.swift in Sources */,
 				E5DE4B0B27CA7D1B0060D9BA /* UsersDataManager.swift in Sources */,
 				E5DE4B1C27CA94010060D9BA /* AppAnimation.swift in Sources */,
+				E5DE4B2827CAA4090060D9BA /* PostTableViewCell.swift in Sources */,
 				E5DE4B0F27CA7DDD0060D9BA /* NetworkUsersRepository.swift in Sources */,
 				E545749827C81E4600A5AE9D /* SceneDelegate.swift in Sources */,
 				E54574E027C8345C00A5AE9D /* Post.swift in Sources */,

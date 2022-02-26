@@ -20,6 +20,8 @@ class PostsViewController: UIViewController {
 
     let viewModel: PostViewModelProtocol
     private lazy var animationView = AnimationView()
+    let postCellIdentifier = String(describing: PostTableViewCell.self)
+    @objc let refreshControl = UIRefreshControl()
 
     // MARK: - Life cycle
 
@@ -38,6 +40,12 @@ class PostsViewController: UIViewController {
         setupUI()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+
 }
 
 // MARK: - Helper Methods
@@ -45,8 +53,21 @@ class PostsViewController: UIViewController {
 private extension PostsViewController {
 
     func setupUI() {
+
+        title = "Post feed".L
+
         animationView.frame = animationContainer.bounds
         animationContainer.addSubview(animationView)
+
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UINib(nibName: postCellIdentifier, bundle: .main),
+                           forCellReuseIdentifier: postCellIdentifier)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 50
+        tableView.refreshControl = refreshControl
+
+        refreshControl.addTarget(self, action: #selector(refreshList), for: .valueChanged)
 
         setupBindings()
     }
@@ -78,8 +99,9 @@ private extension PostsViewController {
                 return
             }
 
-            if let posts = posts {
+            if posts != nil {
                 strongSelf.tableView.fadeIn()
+                strongSelf.tableView.reloadData()
             } else {
                 strongSelf.tableView.fadeOut()
             }
@@ -87,16 +109,57 @@ private extension PostsViewController {
         }
 
     }
+
+    @objc func refreshList() {
+        viewModel.getPosts(forced: true)
+    }
 }
 
 // MARK: - Tableview data source and delegate
+
 extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.posts.value?.count ?? 0
     }
 
+    func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        // swiftlint:disable force_cast
+        let cell = tableView.dequeueReusableCell(withIdentifier: postCellIdentifier,
+                                                 for: indexPath) as! PostTableViewCell
+        cell.post = viewModel.posts.value?[indexPath.row]
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView,
+                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let post = viewModel.posts.value?[indexPath.row]
+        let favoriteActionTitle = post?.isFavorite ?? false ?  "Remove from favorites" : "Favorite".L
+        let markAsFavoriteAction = UIContextualAction(style: .normal,
+                                                      title: favoriteActionTitle,
+                                                      handler: {(_, _, completionHandler) in
+
+            completionHandler(true)
+        })
+
+        return UISwipeActionsConfiguration(actions: [markAsFavoriteAction])
+    }
+
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+
+        let markAsFavoriteAction = UIContextualAction(style: .destructive,
+                                                      title: "Delete".L,
+                                                      handler: {(_, _, completionHandler) in
+
+            completionHandler(true)
+        })
+
+        return UISwipeActionsConfiguration(actions: [markAsFavoriteAction])
     }
 
 }
