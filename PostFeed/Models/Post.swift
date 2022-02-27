@@ -12,7 +12,7 @@ struct Post: Codable {
     let userId: Int
     let title: String
     let body: String
-    var isFavorite: Bool? = false
+    var isFavorite: Bool = false
 }
 
 extension Post {
@@ -20,6 +20,8 @@ extension Post {
         return Post(id: Int(entity.id),
                     userId: Int(entity.userId),
                     title: entity.title ?? "",
-                    body: entity.body ?? "")
+                    body: entity.body ?? "",
+                    isFavorite: entity.isFavorite
+        )
     }
 }

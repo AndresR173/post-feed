@@ -41,4 +41,16 @@ final class PostsDataManager {
             .publisher
             .collect()
     }
+
+    func updateFavoriteStatus(_ post: Post) -> AnyPublisher<Post, Error> {
+        return localRepository.updateFavoriteStatus(post.isFavorite, withId:
+                                                        post.id)
+            .map { post in
+                _ = self.networkRepository.updateFavoriteStatus(post.isFavorite,
+                                                                withId: post.id)
+
+                return post
+            }
+            .eraseToAnyPublisher()
+    }
 }

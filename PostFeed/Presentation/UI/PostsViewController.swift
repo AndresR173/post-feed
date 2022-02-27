@@ -145,8 +145,8 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
         let favoriteActionTitle = post?.isFavorite ?? false ?  "Remove from favorites" : "Favorite".L
         let markAsFavoriteAction = UIContextualAction(style: .normal,
                                                       title: favoriteActionTitle,
-                                                      handler: {(_, _, completionHandler) in
-
+                                                      handler: {[weak self] (_, _, completionHandler) in
+            self?.viewModel.updateFavoriteStatus(atIndex: indexPath.row)
             completionHandler(true)
         })
 

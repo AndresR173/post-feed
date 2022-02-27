@@ -9,14 +9,14 @@ import Foundation
 import Combine
 import CoreData
 
-struct LocalPostsRepository: PostsRepository {
+struct PostsLocalRepository: PostsRepository {
 
     private let client: CoreDataClient = ServiceLocator.shared.resolve()
 
     func getAllPosts() -> AnyPublisher<[Post], Error> {
         client.getAll(
             entity: PostEntity.self,
-            sortDescriptor: [NSSortDescriptor(keyPath: \PostEntity.isFavorite, ascending: true)])
+            sortDescriptor: [NSSortDescriptor(keyPath: \PostEntity.isFavorite, ascending: false)])
 
             .tryMap { entities in
                 if entities.isEmpty {
@@ -35,12 +35,19 @@ struct LocalPostsRepository: PostsRepository {
         return  Fail(error: Failure.badRequest).eraseToAnyPublisher()
     }
 
-    func markPostAsFavorite(_ id: Int) -> AnyPublisher<Any, Error> {
-        return  Fail(error: Failure.badRequest).eraseToAnyPublisher()
+    func updateFavoriteStatus(_ status: Bool, withId id: Int) -> AnyPublisher<Post, Error> {
+        let predicate = NSPredicate(format: "id == %d", id)
+
+        return client.update(entity: PostEntity.self, predicate: predicate) { entity in
+            entity.isFavorite = status
+        }.map { entity in
+            return Post.fromEntity(entity)
+        }
+        .eraseToAnyPublisher()
     }
 
     func addPost(post: Post) -> AnyPublisher<Post, Error> {
-        client.add(entity: PostEntity.self) { entity in
+       return client.add(entity: PostEntity.self) { entity in
             entity.id = Int32(post.id)
             entity.userId = Int32(post.userId)
             entity.title = post.title

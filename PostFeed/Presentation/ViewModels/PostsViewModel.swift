@@ -10,6 +10,7 @@ import Combine
 
 protocol PostViewModelProtocol {
     func getPosts(forced: Bool)
+    func updateFavoriteStatus(atIndex index: Int)
 
     /// This struct is an animation wrapper, used to load Lottie animations
     var animation: Box<AppAnimation?> { get }
@@ -19,6 +20,7 @@ protocol PostViewModelProtocol {
 }
 
 final class PostsViewModel: PostViewModelProtocol {
+
     var animation: Box<AppAnimation?> = Box(nil)
     var posts: Box<[Post]?> = Box(nil)
 
@@ -64,6 +66,25 @@ extension PostsViewModel {
 
                     strongSelf.posts.value = posts
                 }
+            })
+            .store(in: &cancellables)
+    }
+
+    func updateFavoriteStatus(atIndex index: Int) {
+
+        var newPost = posts.value![index]
+        newPost.isFavorite.toggle()
+        dataManager.updateFavoriteStatus(newPost)
+            .sink(receiveCompletion: { _ in}, receiveValue: {[weak self] rPost in
+                guard let strongSelf = self else {
+                    return
+                }
+
+                if let index = strongSelf.posts.value?.firstIndex(where: { $0.id == rPost.id}) {
+                    strongSelf.posts.value?[index] = rPost
+                    strongSelf.posts.value?.sort(by: { post1, _ in post1.isFavorite})
+                }
+
             })
             .store(in: &cancellables)
     }

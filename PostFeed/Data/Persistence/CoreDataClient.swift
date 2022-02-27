@@ -97,6 +97,37 @@ final class CoreDataClient {
         .eraseToAnyPublisher()
     }
 
+    func update<T: NSManagedObject>(entity: T.Type,
+                                    predicate: NSPredicate,
+                                    _ body: @escaping (inout T) -> Void) -> AnyPublisher<T, Error> {
+        Future { [context] promise in
+
+            context.performAndWait {
+                do {
+                    guard let request: NSFetchRequest<T> = T.fetchRequest() as? NSFetchRequest<T> else {
+                        return
+                    }
+                    request.predicate = predicate
+                    var object = try context.fetch(request).first
+                    if object != nil {
+
+                        body(&object!)
+                        try context.save()
+                        promise(.success(object!))
+                    } else {
+
+                        promise(.failure(Failure.notFound))
+                    }
+
+                } catch {
+                    promise(.failure(error))
+                }
+            }
+
+        }
+        .eraseToAnyPublisher()
+    }
+
     func get<T: NSManagedObject>(predicate: NSPredicate) -> AnyPublisher<T?, Error> {
         Future { [context] promise in
 

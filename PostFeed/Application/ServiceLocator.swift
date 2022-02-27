@@ -17,8 +17,8 @@ final class ServiceLocator {
     func initialize() {
 
         // Data Managers
-        container.register(PostsDataManager.self) { _ in PostsDataManager(LocalPostsRepository(),
-                                                                          NetworkPostRepository())
+        container.register(PostsDataManager.self) { _ in PostsDataManager(PostsLocalRepository(),
+                                                                          PostNetworkRepository())
         }
 
         // ViewModels
