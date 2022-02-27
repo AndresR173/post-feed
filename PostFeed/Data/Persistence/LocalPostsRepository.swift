@@ -17,7 +17,11 @@ struct LocalPostsRepository: PostsRepository {
         client.getAll(
             entity: PostEntity.self,
             sortDescriptor: [NSSortDescriptor(keyPath: \PostEntity.isFavorite, ascending: true)])
-            .map { entities in
+
+            .tryMap { entities in
+                if entities.isEmpty {
+                    throw Failure.emptyReponse
+                }
                 var posts = [Post]()
                 entities.forEach { entity in
                     posts.append(Post.fromEntity(entity))

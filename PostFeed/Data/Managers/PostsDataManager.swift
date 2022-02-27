@@ -20,42 +20,16 @@ final class PostsDataManager {
     }
 
     func getAllPosts() -> AnyPublisher<[Post], Error> {
-        Future<[Post], Error> {[weak self] promise in
-            guard let strongSelf = self else {
-                return
+        localRepository.getAllPosts()
+            .catch {  _ in
+                return self.networkRepository.getAllPosts()
+                    .compactMap { posts in
+                        self.savePostsInCache(posts: posts)
+
+                        return posts
+                    }
             }
-            strongSelf.localRepository.getAllPosts()
-                .sink(receiveCompletion: { completion in
-                    if case .failure(let error) = completion {
-                        promise(.failure(error))
-                    }
-                }, receiveValue: { posts in
-                    if posts.isEmpty {
-
-                        strongSelf.networkRepository.getAllPosts()
-                            .sink(receiveCompletion: { completion in
-                                if case .failure(let error) = completion {
-
-                                    promise(.failure(error))
-                                }
-                            }, receiveValue: { nPosts in
-
-                                strongSelf.savePostsInCache(posts: nPosts)
-
-                                promise(.success(nPosts))
-
-                            }).store(in: &strongSelf.cancellables)
-                    } else {
-
-                        promise(.success(posts))
-
-                    }
-                })
-
-                .store(in: &strongSelf.cancellables)
-
-        }
-        .eraseToAnyPublisher()
+            .eraseToAnyPublisher()
     }
 
     private func savePostsInCache(posts: [Post]) {
@@ -63,12 +37,8 @@ final class PostsDataManager {
             return localRepository.addPost(post: post).eraseToAnyPublisher()
         }
 
-        operationPublishers
+       _ = operationPublishers
             .publisher
             .collect()
-            .sink { _ in
-                print("finished")
-            }
-            .store(in: &cancellables)
     }
 }

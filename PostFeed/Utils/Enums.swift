@@ -20,4 +20,5 @@ enum Failure: Error {
     case badContent
     case badRequest
     case cacheError
+    case emptyReponse
 }
