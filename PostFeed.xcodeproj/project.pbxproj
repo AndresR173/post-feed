@@ -32,6 +32,7 @@
 		E54574EC27C83C9F00A5AE9D /* PostsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54574EB27C83C9F00A5AE9D /* PostsRepository.swift */; };
 		E54574F027C841A000A5AE9D /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54574EF27C841A000A5AE9D /* PostsViewController.swift */; };
 		E54574F227C841B000A5AE9D /* PostsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54574F127C841B000A5AE9D /* PostsViewController.xib */; };
+		E5779A4327CC59660083D206 /* ViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5779A4227CC59660083D206 /* ViewController+Extensions.swift */; };
 		E5DE4B0B27CA7D1B0060D9BA /* UsersDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE4B0A27CA7D1B0060D9BA /* UsersDataManager.swift */; };
 		E5DE4B0D27CA7DB30060D9BA /* UsersLocalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE4B0C27CA7DB30060D9BA /* UsersLocalRepository.swift */; };
 		E5DE4B0F27CA7DDD0060D9BA /* UsersNetworkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE4B0E27CA7DDD0060D9BA /* UsersNetworkRepository.swift */; };
@@ -95,6 +96,7 @@
 		E54574EB27C83C9F00A5AE9D /* PostsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsRepository.swift; sourceTree = "<group>"; };
 		E54574EF27C841A000A5AE9D /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		E54574F127C841B000A5AE9D /* PostsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsViewController.xib; sourceTree = "<group>"; };
+		E5779A4227CC59660083D206 /* ViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extensions.swift"; sourceTree = "<group>"; };
 		E5DE4B0A27CA7D1B0060D9BA /* UsersDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersDataManager.swift; sourceTree = "<group>"; };
 		E5DE4B0C27CA7DB30060D9BA /* UsersLocalRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersLocalRepository.swift; sourceTree = "<group>"; };
 		E5DE4B0E27CA7DDD0060D9BA /* UsersNetworkRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersNetworkRepository.swift; sourceTree = "<group>"; };
@@ -161,12 +163,12 @@
 		E545749427C81E4600A5AE9D /* PostFeed */ = {
 			isa = PBXGroup;
 			children = (
-				E5DE4B1D27CA94F50060D9BA /* Resources */,
 				E54574C827C81E8900A5AE9D /* Application */,
 				E54574E427C8352500A5AE9D /* Data */,
 				E54574C927C81EBF00A5AE9D /* Models */,
 				E545749E27C81E4600A5AE9D /* PostFeed.xcdatamodeld */,
 				E54574E327C8351000A5AE9D /* Presentation */,
+				E5DE4B1D27CA94F50060D9BA /* Resources */,
 				E54574CD27C81EEE00A5AE9D /* Utils */,
 			);
 			path = PostFeed;
@@ -258,6 +260,7 @@
 			children = (
 				E54574D527C81F8000A5AE9D /* String+Extensions.swift */,
 				E54574D727C81FA000A5AE9D /* UIView+Extensions.swift */,
+				E5779A4227CC59660083D206 /* ViewController+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -509,6 +512,7 @@
 				E54574A027C81E4600A5AE9D /* PostFeed.xcdatamodeld in Sources */,
 				E54574D327C81F4200A5AE9D /* CustomViewController.swift in Sources */,
 				E54574CF27C81F0300A5AE9D /* Builder.swift in Sources */,
+				E5779A4327CC59660083D206 /* ViewController+Extensions.swift in Sources */,
 				E54574D827C81FA000A5AE9D /* UIView+Extensions.swift in Sources */,
 				E54574E227C8349800A5AE9D /* Comment.swift in Sources */,
 				E54574EC27C83C9F00A5AE9D /* PostsRepository.swift in Sources */,

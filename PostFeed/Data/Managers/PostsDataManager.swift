@@ -19,17 +19,24 @@ final class PostsDataManager {
         networkRepository = network
     }
 
-    func getAllPosts() -> AnyPublisher<[Post], Error> {
-        localRepository.getAllPosts()
+    func getAllPosts(forced: Bool) -> AnyPublisher<[Post], Error> {
+        if forced {
+            return getPostFromNetworkAndCache()
+        }
+        return localRepository.getAllPosts()
             .catch {  _ in
-                return self.networkRepository.getAllPosts()
-                    .compactMap { posts in
-                        self.savePostsInCache(posts: posts)
-
-                        return posts
-                    }
+                return self.getPostFromNetworkAndCache()
             }
             .eraseToAnyPublisher()
+    }
+
+    private func getPostFromNetworkAndCache() -> AnyPublisher<[Post], Error> {
+        return self.networkRepository.getAllPosts()
+            .compactMap { posts in
+                self.savePostsInCache(posts: posts)
+
+                return posts
+            }.eraseToAnyPublisher()
     }
 
     private func savePostsInCache(posts: [Post]) {
@@ -43,8 +50,7 @@ final class PostsDataManager {
     }
 
     func updateFavoriteStatus(_ post: Post) -> AnyPublisher<Post, Error> {
-        return localRepository.updateFavoriteStatus(post.isFavorite, withId:
-                                                        post.id)
+        return localRepository.updateFavoriteStatus(post.isFavorite, withId: post.id)
             .map { post in
                 _ = self.networkRepository.updateFavoriteStatus(post.isFavorite,
                                                                 withId: post.id)
@@ -52,5 +58,18 @@ final class PostsDataManager {
                 return post
             }
             .eraseToAnyPublisher()
+    }
+
+    func deletePostWith(id: Int) -> AnyPublisher<Void, Error> {
+        self.localRepository.removePost(id: id)
+            .map {
+                _ = self.networkRepository.removePost(id: id)
+                return ()
+            }
+            .eraseToAnyPublisher()
+    }
+
+    func deletePosts(_ posts: [Post]) -> AnyPublisher<Void, Error> {
+        Fail(error: Failure.notFound).eraseToAnyPublisher()
     }
 }

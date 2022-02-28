@@ -21,13 +21,25 @@ class PostsViewController: UIViewController {
     let viewModel: PostViewModelProtocol
     private lazy var animationView = AnimationView()
     let postCellIdentifier = String(describing: PostTableViewCell.self)
-    @objc let refreshControl = UIRefreshControl()
+    lazy var refreshButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(image: UIImage(systemName: "tray.and.arrow.down.fill"),
+                               style: .plain,
+                               target: self,
+                               action: #selector(downloadList))
+    }()
+    lazy var deleteListItem: UIBarButtonItem = {
+        return UIBarButtonItem(image: UIImage(systemName: "trash"),
+                               style: .plain,
+                               target: self,
+                               action: #selector(deleteList))
+    }()
 
     // MARK: - Life cycle
 
-    init(_ viewModel: PostViewModelProtocol) {
-        self.viewModel = viewModel
-        super.init(nibName: String(describing: PostsViewController.self), bundle: Bundle.main)
+    init(_ viewModel: PostViewModelProtocol? = nil) {
+        self.viewModel = viewModel ?? ServiceLocator.shared.resolve()
+        super.init(nibName: String(describing: PostsViewController.self),
+                   bundle: Bundle.main)
     }
 
     required init?(coder: NSCoder) {
@@ -65,9 +77,6 @@ private extension PostsViewController {
                            forCellReuseIdentifier: postCellIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 50
-        tableView.refreshControl = refreshControl
-
-        refreshControl.addTarget(self, action: #selector(refreshList), for: .valueChanged)
 
         setupBindings()
     }
@@ -99,22 +108,29 @@ private extension PostsViewController {
                 return
             }
 
-            strongSelf.refreshControl.endRefreshing()
-
             if posts != nil {
                 strongSelf.tableView.fadeIn()
                 strongSelf.tableView.reloadData()
+                strongSelf.navigationItem.rightBarButtonItem = strongSelf.deleteListItem
+                strongSelf.tableView.refreshControl = nil
             } else {
                 strongSelf.tableView.fadeOut()
+                strongSelf.navigationItem.rightBarButtonItem = strongSelf.refreshButtonItem
             }
 
         }
 
     }
 
-    @objc func refreshList() {
-        if refreshControl.isRefreshing {
-            viewModel.getPosts(forced: true)
+    @objc func downloadList() {
+        viewModel.getPosts(forced: true)
+    }
+
+    @objc func deleteList() {
+        showDeleteDialog(title: "Delete".L,
+                               message: "Are you sure you want to delete all posts?".L
+        ) { [weak self] in
+            self?.viewModel.deletePosts()
         }
     }
 }
@@ -127,7 +143,7 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-       return 1
+        return viewModel.posts.value?.count ?? 0 > 0 ? 1: 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -146,6 +162,7 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
         let markAsFavoriteAction = UIContextualAction(style: .normal,
                                                       title: favoriteActionTitle,
                                                       handler: {[weak self] (_, _, completionHandler) in
+
             self?.viewModel.updateFavoriteStatus(atIndex: indexPath.row)
             completionHandler(true)
         })
@@ -156,14 +173,20 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
-        let markAsFavoriteAction = UIContextualAction(style: .destructive,
-                                                      title: "Delete".L,
-                                                      handler: {(_, _, completionHandler) in
+        let deleteAction = UIContextualAction(style: .destructive,
+                                              title: "Delete".L,
+                                              handler: {[weak self] (_, _, completionHandler) in
+
+            self?.showDeleteDialog(title: "Delete".L,
+                                   message: "Are you sure you want to delete this post?".L
+            ) {
+                self?.viewModel.deletePostAt(index: indexPath.row)
+            }
 
             completionHandler(true)
         })
 
-        return UISwipeActionsConfiguration(actions: [markAsFavoriteAction])
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
 }

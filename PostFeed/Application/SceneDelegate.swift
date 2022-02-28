@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
 
         window?.rootViewController = UINavigationController(
-            rootViewController: PostsViewController(ServiceLocator.shared.resolve())
+            rootViewController: PostsViewController()
         )
 
         window?.makeKeyAndVisible()

@@ -11,6 +11,8 @@ import Combine
 protocol PostViewModelProtocol {
     func getPosts(forced: Bool)
     func updateFavoriteStatus(atIndex index: Int)
+    func deletePosts()
+    func deletePostAt(index: Int)
 
     /// This struct is an animation wrapper, used to load Lottie animations
     var animation: Box<AppAnimation?> { get }
@@ -40,7 +42,7 @@ extension PostsViewModel {
     func getPosts(forced: Bool = false) {
         animation.value = AppAnimation(animation: Constants.Animations.searching, message: "Loading".L)
         posts.value = nil
-        dataManager.getAllPosts()
+        dataManager.getAllPosts(forced: forced)
             .mapError { [weak self] error -> Error in
 
                 guard let strongSelf = self else {
@@ -87,5 +89,50 @@ extension PostsViewModel {
 
             })
             .store(in: &cancellables)
+    }
+
+    func deletePosts() {
+        guard let posts = posts.value else {
+
+            return
+        }
+        posts.map {
+            dataManager.deletePostWith(id: $0.id)
+        }
+            .publisher
+            .collect()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    self.posts.value = nil
+                    self.animation.value = AppAnimation(animation: Constants.Animations.error,
+                                                        message: "Ops! something went wrong".L)
+                    dump(error)
+                case  .finished:
+                    self.posts.value = nil
+                    self.animation.value = AppAnimation(animation: Constants.Animations.empty,
+                                                        message: "Your list is empty.\nPlease download a new list".L)
+
+                }}, receiveValue: {_ in }
+            )
+            .store(in: &cancellables)
+
+    }
+
+    func deletePostAt(index: Int) {
+        if let post = posts.value?[index] {
+            dataManager.deletePostWith(id: post.id)
+                .sink(receiveCompletion: {[weak self] completion in
+                    switch completion {
+                    case .failure(let error):
+                        dump(error)
+                    case .finished:
+                        self?.posts.value?.remove(at: index)
+                    }
+                }, receiveValue: {
+                })
+                .store(in: &cancellables)
+        }
+
     }
 }

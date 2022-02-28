@@ -27,8 +27,20 @@ struct PostNetworkRepository: PostsRepository {
             .eraseToAnyPublisher()
     }
 
-    func removePost() -> AnyPublisher<Any, Error> {
-        return  Fail(error: Failure.badRequest).eraseToAnyPublisher()
+    func removePost(id: Int) -> AnyPublisher<Void, Error> {
+        var urlComponents = Constants.Api.getBaseURLComponents()
+        urlComponents.path = "\(Constants.Api.Paths.posts)/\(id)"
+
+        guard let url = urlComponents.url else {
+            return Fail(error: Failure.badRequest).eraseToAnyPublisher()
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = HttpMethod.delete.rawValue
+
+        return apiClient.run(request)
+            .eraseToAnyPublisher()
+
     }
 
     func updateFavoriteStatus(_ status: Bool, withId id: Int) -> AnyPublisher<Post, Error> {
@@ -53,7 +65,6 @@ struct PostNetworkRepository: PostsRepository {
          } catch {
              return Fail(error: Failure.badContent).eraseToAnyPublisher()
          }
-
     }
 
     func addPost(post: Post) -> AnyPublisher<Post, Error> {

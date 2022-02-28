@@ -29,4 +29,15 @@ struct APIClient {
             .receive(on: DispatchQueue.main) // Move to main thread
             .eraseToAnyPublisher()
     }
+
+    func run(_ request: URLRequest) -> AnyPublisher<Void, Error> {
+
+        return URLSession.shared
+            .dataTaskPublisher(for: request) // Runs Http request
+            .tryMap { _ in
+               ()
+            }
+            .receive(on: DispatchQueue.main) // Move to main thread
+            .eraseToAnyPublisher()
+    }
 }

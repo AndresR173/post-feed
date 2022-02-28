@@ -43,8 +43,8 @@ final class CoreDataClient {
         .eraseToAnyPublisher()
     }
 
-    func deleteObject<T: NSManagedObject>(entity: T.Type,
-                                          predicate: NSPredicate) -> AnyPublisher<Void, Error> {
+    func delete<T: NSManagedObject>(entity: T.Type,
+                                    predicate: NSPredicate) -> AnyPublisher<Void, Error> {
         Future {[context] promise in
 
             let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
@@ -56,7 +56,7 @@ final class CoreDataClient {
                         return
                     }
                     request.predicate = predicate
-                    let objects = try context.fetch(request)
+                    let objects = try privateMOC.fetch(request)
 
                     objects.forEach { object in
                         privateMOC.delete(object)

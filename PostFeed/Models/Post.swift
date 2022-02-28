@@ -13,6 +13,13 @@ struct Post: Codable {
     let title: String
     let body: String
     var isFavorite: Bool = false
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case userId
+        case title
+        case body
+    }
 }
 
 extension Post {
