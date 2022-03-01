@@ -1,35 +1,35 @@
 //
-//  PostDescriptionTableViewCell.swift
+//  UserTableViewCell.swift
 //  PostFeed
 //
-//  Created by Andres Rojas on 28/02/22.
+//  Created by Andres Rojas on 1/03/22.
 //
 
 import UIKit
 
-class PostDescriptionTableViewCell: UITableViewCell {
+class PostUserTableViewCell: UITableViewCell {
 
     // MARK: - Properties
 
-    private lazy var cellTitleLabel = UILabel()
+    private lazy var nameLabel = UILabel()
         .with { label in
             label.text = "Title".L
             label.font = UIFont.boldSystemFont(ofSize: 20.0)
         }
 
-    private lazy var cellDescriptionLabel = UILabel()
+    private lazy var emailLabel = UILabel()
         .with { label in
             label.text = "Description".L
             label.font = UIFont.boldSystemFont(ofSize: 20.0)
         }
 
-    private lazy var postTitleLabel = UILabel()
+    private lazy var phoneLabel = UILabel()
         .with { label in
             label.numberOfLines = 3
 
         }
 
-    private lazy var postDescriptionLabel = UILabel()
+    private lazy var websiteLabel = UILabel()
         .with { label in
             label.numberOfLines = 0
         }
@@ -39,18 +39,22 @@ class PostDescriptionTableViewCell: UITableViewCell {
             stackView.axis = .vertical
             stackView.spacing = 8
 
-            stackView.addArrangedSubview(cellTitleLabel)
-            stackView.addArrangedSubview(postTitleLabel)
-            stackView.addArrangedSubview(cellDescriptionLabel)
-            stackView.addArrangedSubview(postDescriptionLabel)
+            stackView.addArrangedSubview(nameLabel)
+            stackView.addArrangedSubview(emailLabel)
+            stackView.addArrangedSubview(phoneLabel)
+            stackView.addArrangedSubview(websiteLabel)
         }
 
-    var post: Post? {
+    var user: User? {
         didSet {
-            postTitleLabel.text = post?.title
-            postDescriptionLabel.text = post?.body
+            nameLabel.text = user?.name
+            emailLabel.text = user?.email
+            phoneLabel.text = user?.phone
+            websiteLabel.text = user?.website
         }
     }
+
+    // MARK: - Life cycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -64,7 +68,7 @@ class PostDescriptionTableViewCell: UITableViewCell {
 
 }
 
-private extension PostDescriptionTableViewCell {
+private extension PostUserTableViewCell {
     func setupUI() {
         contentView.addSubview(stackView)
         selectionStyle = .none

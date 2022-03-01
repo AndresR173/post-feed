@@ -18,7 +18,7 @@ protocol PostDetailsViewModelProtocol {
     var user: Box<User?> { get }
     var comments: Box<[Comment]?> { get }
 
-    var numberOfRows: Int { get }
+    func updateFavoriteStatus()
 }
 
 final class PostDetailsViewModel: PostDetailsViewModelProtocol {
@@ -32,16 +32,6 @@ final class PostDetailsViewModel: PostDetailsViewModelProtocol {
     var post: Box<Post?> = Box(nil)
     var user: Box<User?> = Box(nil)
     var comments: Box<[Comment]?> = Box(nil)
-
-    var numberOfRows: Int {
-        var count = 2
-
-        if comments.value != nil {
-            count += 1
-        }
-
-        return count
-    }
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -65,7 +55,7 @@ extension PostDetailsViewModel {
 
         postsManager.getPostBy(id: postId)
             .flatMap { post in
-                self.usersManager.getUserFromPostWith(id: post.userId)
+                self.usersManager.getUserWith(id: post.userId)
                     .map { user in
                         (post: post, user: user)
                     }
@@ -89,11 +79,15 @@ extension PostDetailsViewModel {
             }
             .sink(receiveCompletion: { _ in}, receiveValue: {[weak self] response in
                 self?.animation.value = nil
-                self?.post.value = response.post
                 self?.user.value = response.user
                 self?.comments.value = response.comments
+                self?.post.value = response.post
             })
             .store(in: &cancellables)
 
+    }
+
+    func updateFavoriteStatus() {
+        post.value?.isFavorite.toggle()
     }
 }

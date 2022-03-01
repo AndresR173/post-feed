@@ -11,8 +11,10 @@ import Combine
 protocol PostViewModelProtocol {
     func getPosts(forced: Bool)
     func updateFavoriteStatus(atIndex index: Int)
+    func updateFavoriteStatusOnPost(withId id: Int)
     func deletePosts()
     func deletePostAt(index: Int)
+    func deletePostWith(id: Int)
 
     /// This struct is an animation wrapper, used to load Lottie animations
     var animation: Box<AppAnimation?> { get }
@@ -134,5 +136,20 @@ extension PostsViewModel {
                 .store(in: &cancellables)
         }
 
+    }
+
+    func updateFavoriteStatusOnPost(withId id: Int) {
+        guard let index = posts.value?.firstIndex(where: {$0.id == id}) else {
+            return
+        }
+        updateFavoriteStatus(atIndex: index)
+    }
+
+    func deletePostWith(id: Int) {
+        guard let index = posts.value?.firstIndex(where: {$0.id == id}) else {
+            return
+        }
+
+        deletePostAt(index: index)
     }
 }

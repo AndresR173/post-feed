@@ -68,7 +68,7 @@ struct PostsLocalRepository: PostsRepository {
             predicate: NSPredicate(format: "id = %d", id))
 
             .tryMap { entity in
-                if entity != nil {
+                if entity == nil {
                     throw Failure.emptyReponse
                 }
 

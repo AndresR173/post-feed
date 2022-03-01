@@ -193,8 +193,24 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
             return
         }
 
-        navigationController?.pushViewController(PostDetailViewController(PostDetailsViewModel(postId: post.id)),
+        let viewController = PostDetailViewController(PostDetailsViewModel(postId: post.id))
+        viewController.delegate = self
+
+        navigationController?.pushViewController(viewController,
                                                  animated: true)
+    }
+
+}
+
+// MARK: - PostDetailsViewControllerDelegate implementation
+
+extension PostsViewController: PostDetailViewControllerDelegate {
+    func updateFavoriteStatus(_ postId: Int) {
+        viewModel.updateFavoriteStatusOnPost(withId: postId)
+    }
+
+    func deletePost(_ postId: Int) {
+        viewModel.deletePostWith(id: postId)
     }
 
 }

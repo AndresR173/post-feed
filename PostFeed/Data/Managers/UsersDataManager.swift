@@ -18,7 +18,7 @@ struct UsersDataManager {
         self.localRepository = local
     }
 
-    func getUserFromPostWith(id: Int) -> AnyPublisher<User, Error> {
+    func getUserWith(id: Int) -> AnyPublisher<User, Error> {
         localRepository.getUserBy(id: id)
             .tryCatch { _ in
                 self.networkRepository.getUserBy(id: id)
