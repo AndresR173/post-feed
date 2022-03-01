@@ -112,7 +112,6 @@ private extension PostsViewController {
                 strongSelf.tableView.fadeIn()
                 strongSelf.tableView.reloadData()
                 strongSelf.navigationItem.rightBarButtonItem = strongSelf.deleteListItem
-                strongSelf.tableView.refreshControl = nil
             } else {
                 strongSelf.tableView.fadeOut()
                 strongSelf.navigationItem.rightBarButtonItem = strongSelf.refreshButtonItem
@@ -187,6 +186,15 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
         })
 
         return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let post = viewModel.posts.value?[indexPath.row] else {
+            return
+        }
+
+        navigationController?.pushViewController(PostDetailViewController(PostDetailsViewModel(postId: post.id)),
+                                                 animated: true)
     }
 
 }

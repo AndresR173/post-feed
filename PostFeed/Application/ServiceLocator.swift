@@ -23,8 +23,11 @@ final class ServiceLocator {
         container.register(UsersDataManager.self) { _ in UsersDataManager(UsersLocalRepository(),
                                                                           UsersNetworkRepository()) }
 
+        container.register(CommentsDataManager.self) { _ in CommentsDataManager(CommentsLocalRepository(),
+                                                                          CommentsNetworkRepository()) }
+
         // ViewModels
-        container.register(PostViewModelProtocol.self) { _ in PostsViewModel(self.resolve())}
+        container.register(PostViewModelProtocol.self) { _ in PostsViewModel()}
 
     }
 

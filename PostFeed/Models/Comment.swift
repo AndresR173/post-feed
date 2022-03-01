@@ -14,3 +14,13 @@ struct Comment: Codable {
     let email: String
     let body: String
 }
+
+extension Comment {
+    static func fromEntity(_ entity: CommentEntity) -> Comment {
+        return Comment(id: Int(entity.id),
+                       postId: Int(entity.postId),
+                       name: entity.name ?? "",
+                       email: entity.email ?? "",
+                       body: entity.body ?? "")
+    }
+}

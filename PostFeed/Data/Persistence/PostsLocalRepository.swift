@@ -10,6 +10,7 @@ import Combine
 import CoreData
 
 struct PostsLocalRepository: PostsRepository {
+
     private let client: CoreDataClient = ServiceLocator.shared.resolve()
 
     func getAllPosts() -> AnyPublisher<[Post], Error> {
@@ -59,6 +60,21 @@ struct PostsLocalRepository: PostsRepository {
             return Post.fromEntity(entity)
         }
         .eraseToAnyPublisher()
+    }
+
+    func getPostBy(id: Int) -> AnyPublisher<Post, Error> {
+        client.get(
+            entity: PostEntity.self,
+            predicate: NSPredicate(format: "id = %d", id))
+
+            .tryMap { entity in
+                if entity != nil {
+                    throw Failure.emptyReponse
+                }
+
+                return Post.fromEntity(entity!)
+            }
+            .eraseToAnyPublisher()
     }
 
 }

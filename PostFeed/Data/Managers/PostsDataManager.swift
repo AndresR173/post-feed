@@ -72,4 +72,15 @@ final class PostsDataManager {
     func deletePosts(_ posts: [Post]) -> AnyPublisher<Void, Error> {
         Fail(error: Failure.notFound).eraseToAnyPublisher()
     }
+
+    func getPostBy(id: Int) -> AnyPublisher<Post, Error> {
+        localRepository.getPostBy(id: id)
+            .tryCatch { _ in
+                self.networkRepository.getPostBy(id: id)
+                    .map {
+                        self.savePostsInCache(posts: [$0])
+                        return $0
+                    }.eraseToAnyPublisher()
+            }.eraseToAnyPublisher()
+    }
 }

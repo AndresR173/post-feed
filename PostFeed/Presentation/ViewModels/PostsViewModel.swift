@@ -30,8 +30,8 @@ final class PostsViewModel: PostViewModelProtocol {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(_ manager: PostsDataManager) {
-        dataManager = manager
+    init(_ manager: PostsDataManager? = nil) {
+        dataManager = manager ?? ServiceLocator.shared.resolve()
 
         getPosts()
     }

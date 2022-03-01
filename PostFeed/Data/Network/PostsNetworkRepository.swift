@@ -2,7 +2,7 @@
 //  PostsNetworkRepository.swift
 //  PostFeed
 //
-//  Created by Andres Rojas on 26/02/22.
+//  Created by Andres Rojas on 26/02/22.∫
 //
 
 import Foundation
@@ -69,5 +69,22 @@ struct PostNetworkRepository: PostsRepository {
 
     func addPost(post: Post) -> AnyPublisher<Post, Error> {
         return  Fail(error: Failure.badRequest).eraseToAnyPublisher()
+    }
+
+    func getPostBy(id: Int) -> AnyPublisher<Post, Error> {
+        var urlComponents = Constants.Api.getBaseURLComponents()
+        urlComponents.path = "\(Constants.Api.Paths.posts)/\(id)"
+
+        guard let url = urlComponents.url else {
+            return Fail(error: Failure.badRequest).eraseToAnyPublisher()
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = HttpMethod.get.rawValue
+
+        return apiClient.run(request)
+            .map(\.value)
+            .eraseToAnyPublisher()
+
     }
 }
