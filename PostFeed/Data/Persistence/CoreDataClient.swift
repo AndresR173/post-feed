@@ -128,7 +128,7 @@ final class CoreDataClient {
         .eraseToAnyPublisher()
     }
 
-    func get<T: NSManagedObject>(predicate: NSPredicate) -> AnyPublisher<T?, Error> {
+    func get<T: NSManagedObject>(entity: T.Type, predicate: NSPredicate) -> AnyPublisher<T?, Error> {
         Future { [context] promise in
 
             context.performAndWait {

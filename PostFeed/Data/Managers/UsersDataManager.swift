@@ -12,8 +12,8 @@ struct UsersDataManager {
     let networkRepository: UsersRepository
     let localRepository: UsersRepository
 
-    init(_ localRepo: UsersRepository, networkRepo: UsersRepository) {
-        self.networkRepository = networkRepo
-        self.localRepository = localRepo
+    init(_ local: UsersRepository, _ network: UsersRepository) {
+        self.networkRepository = network
+        self.localRepository = local
     }
 }

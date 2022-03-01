@@ -10,4 +10,5 @@ import Combine
 
 protocol UsersRepository {
     func getUserBy(id: Int) -> AnyPublisher<User, Error>
+    func addUser(_ user: User) -> AnyPublisher<User, Error>
 }

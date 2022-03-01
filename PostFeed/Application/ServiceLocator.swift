@@ -18,8 +18,10 @@ final class ServiceLocator {
 
         // Data Managers
         container.register(PostsDataManager.self) { _ in PostsDataManager(PostsLocalRepository(),
-                                                                          PostNetworkRepository())
-        }
+                                                                          PostNetworkRepository()) }
+
+        container.register(UsersDataManager.self) { _ in UsersDataManager(UsersLocalRepository(),
+                                                                          UsersNetworkRepository()) }
 
         // ViewModels
         container.register(PostViewModelProtocol.self) { _ in PostsViewModel(self.resolve())}
