@@ -77,6 +77,11 @@ private extension PostsViewController {
                            forCellReuseIdentifier: postCellIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 50
+        tableView.accessibilityIdentifier = "posts.tableView"
+
+        refreshButtonItem.accessibilityIdentifier = "posts.refreshButton"
+        deleteListItem.accessibilityIdentifier = "posts.deleteButton"
+        navigationController?.navigationBar.accessibilityIdentifier = "navigationBar"
 
         setupBindings()
     }
@@ -150,6 +155,7 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: postCellIdentifier,
                                                  for: indexPath) as! PostTableViewCell
         cell.post = viewModel.posts.value?[indexPath.row]
+        cell.accessibilityIdentifier = "postCell.\(indexPath.row)"
 
         return cell
     }

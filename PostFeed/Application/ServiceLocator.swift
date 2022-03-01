@@ -24,7 +24,24 @@ final class ServiceLocator {
                                                                           UsersNetworkRepository()) }
 
         container.register(CommentsDataManager.self) { _ in CommentsDataManager(CommentsLocalRepository(),
-                                                                          CommentsNetworkRepository()) }
+                                                                                CommentsNetworkRepository()) }
+
+        // ViewModels
+        container.register(PostViewModelProtocol.self) { _ in PostsViewModel()}
+
+    }
+
+    func initializeMocks() {
+
+        // Data Managers
+        container.register(PostsDataManager.self) { _ in PostsDataManager(MockSuccessulPostsRepository(),
+                                                                          MockSuccessulPostsRepository()) }
+
+        container.register(UsersDataManager.self) { _ in UsersDataManager(MockUserSuccessfulRepository(),
+                                                                          MockUserSuccessfulRepository()) }
+
+        container.register(CommentsDataManager.self) { _ in CommentsDataManager(MockSuccessfulCommentsRepository(),
+                                                                                MockSuccessfulCommentsRepository()) }
 
         // ViewModels
         container.register(PostViewModelProtocol.self) { _ in PostsViewModel()}

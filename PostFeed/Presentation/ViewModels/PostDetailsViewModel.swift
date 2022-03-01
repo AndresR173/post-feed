@@ -51,7 +51,7 @@ final class PostDetailsViewModel: PostDetailsViewModelProtocol {
 
 extension PostDetailsViewModel {
     private func getPostInfo() {
-        animation.value = AppAnimation(animation: Constants.Animations.searching, message: "Loading".L)
+        animation.value = AppAnimation(animation: Constants.Animations.loading, message: "Loading".L)
 
         postsManager.getPostBy(id: postId)
             .flatMap { post in

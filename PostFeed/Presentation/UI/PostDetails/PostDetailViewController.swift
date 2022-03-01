@@ -100,6 +100,7 @@ private extension PostDetailViewController {
         tableView.estimatedRowHeight = 50
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
+        tableView.accessibilityIdentifier = "postDetails.tableView"
 
         setupBindings()
     }

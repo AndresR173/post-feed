@@ -19,9 +19,11 @@ extension UIViewController {
                                    handler: { _ -> Void in
             onDelete()
         })
+        delete.accessibilityIdentifier = "delete.alertAction"
         let cancel = UIAlertAction(title: "Cancel".L,
                                    style: .cancel
         )
+        cancel.accessibilityIdentifier = "cancel.alertAction"
 
         dialogMessage.addAction(delete)
         dialogMessage.addAction(cancel)

@@ -26,12 +26,14 @@ class PostDescriptionTableViewCell: UITableViewCell {
     private lazy var postTitleLabel = UILabel()
         .with { label in
             label.numberOfLines = 3
+            label.accessibilityIdentifier = "postDetails.title"
 
         }
 
     private lazy var postDescriptionLabel = UILabel()
         .with { label in
             label.numberOfLines = 0
+            label.accessibilityIdentifier = "postDetails.description"
         }
 
     private lazy var stackView = UIStackView()

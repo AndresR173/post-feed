@@ -40,6 +40,8 @@ class PostTableViewCell: UITableViewCell {
 
     private func setupUI() {
         accessoryType = .disclosureIndicator
+        descriptionLabel.accessibilityIdentifier = "post.tableViewCell.description"
+        iconImageView.accessibilityIdentifier = "post.tableViewCell.imageView"
     }
 
 }

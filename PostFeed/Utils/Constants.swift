@@ -38,6 +38,6 @@ struct Constants {
 
         static let error = "error"
         static let empty = "empty"
-        static let searching = "searching"
+        static let loading = "searching"
     }
 }

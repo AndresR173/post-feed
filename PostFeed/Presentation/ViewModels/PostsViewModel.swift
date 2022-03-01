@@ -42,7 +42,7 @@ final class PostsViewModel: PostViewModelProtocol {
 extension PostsViewModel {
 
     func getPosts(forced: Bool = false) {
-        animation.value = AppAnimation(animation: Constants.Animations.searching, message: "Loading".L)
+        animation.value = AppAnimation(animation: Constants.Animations.loading, message: "Loading".L)
         posts.value = nil
         dataManager.getAllPosts(forced: forced)
             .mapError { [weak self] error -> Error in
