@@ -13,11 +13,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        if CommandLine.arguments.contains("-UITests") {
+            ServiceLocator.shared.initializeMocks()
+        } else {
+            ServiceLocator.shared.initialize()
 
-        ServiceLocator.shared.initialize()
-
-        ServiceLocator.shared.container.register(CoreDataClient.self) { _ in
-            CoreDataClient(self.persistentContainer.viewContext)
+            ServiceLocator.shared.container.register(CoreDataClient.self) { _ in
+                CoreDataClient(self.persistentContainer.viewContext)
+            }
         }
 
         return true

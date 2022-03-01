@@ -32,6 +32,9 @@ The networking is handled by [NSURLSession](https://developer.apple.com/document
 - [Lottie](https://github.com/airbnb/lottie-ios)
 - [Swinject](https://github.com/Swinject/Swinject)
 
+## Demo
+![demo](https://github.com/AndresR173/post-feed/blob/main/post-feed.gif)
+
  License
  ----
 

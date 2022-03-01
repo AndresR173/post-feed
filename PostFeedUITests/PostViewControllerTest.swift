@@ -31,7 +31,7 @@ class PostViewControllerTest: XCTestCase {
         let deleteButton = navigationbarNavigationBar.buttons["posts.deleteButton"]
         XCTAssert(deleteButton.waitForExistence(timeout: 1))
 
-        let cell = app.tables["posts.tableView"].staticTexts["qui est esse"]
+        let cell = app.tables["posts.tableView"].staticTexts["title"]
         XCTAssert(cell.waitForExistence(timeout: 1))
 
         deleteButton.tap()
@@ -50,7 +50,7 @@ class PostViewControllerTest: XCTestCase {
     func testShouldOpenPostDetailsAfterTappingACell() {
         let app = XCUIApplication()
 
-        let cell = app.tables["posts.tableView"].staticTexts["qui est esse"]
+        let cell = app.tables["posts.tableView"].staticTexts["title"]
         XCTAssert(cell.waitForExistence(timeout: 1))
 
         cell.tap()
